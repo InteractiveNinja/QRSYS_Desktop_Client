@@ -2,17 +2,21 @@ import React from "react";
 
 class App extends React.Component {
   state = {
-    userid: ""
+    userid: "",
+    hostname: ""
   };
 
-  handleInput = event => {
+  setUserID = event => {
     this.setState({ userid: event.target.value });
+  };
+  setHostName = event => {
+    this.setState({ hostname: event.target.value });
   };
 
   connectWS = () => {
-    let con = new WebSocket("ws://localhost:8080")
+    let con = new WebSocket("ws://192.168.1.117:8080")
     con.onopen = () =>{
-        con.send(`{"type":"register","value":"${this.state.userid}"}`)
+        con.send(JSON.stringify({type:"register",value:this.state.userid,hostname:this.state.hostname}))
     }
     con.onmessage = (msg) =>{
         let json = JSON.parse(msg.data)
@@ -36,7 +40,8 @@ class App extends React.Component {
     return (
       <div>
           <h1>Device Register</h1>
-        <input onChange={this.handleInput} placeholder="User ID" />
+        <input onChange={this.setUserID} placeholder="User ID" />
+        <input onChange={this.setHostName} placeholder="Hostname" />
         <button onClick={this.connectWS}>Register</button>
       </div>
     );
