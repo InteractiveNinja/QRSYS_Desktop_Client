@@ -14,16 +14,17 @@ class App extends React.Component {
   };
 
   connectWS = () => {
-    let con = new WebSocket("ws://192.168.1.117:8080")
+    let con = new WebSocket("ws://localhost:8080")
     con.onopen = () =>{
         con.send(JSON.stringify({type:"register",value:this.state.userid,hostname:this.state.hostname}))
     }
     con.onmessage = (msg) =>{
         let json = JSON.parse(msg.data)
+        console.log(json)
         switch (json.type) {
             case "callback":
-                if(json.value === "200") alert("Regestrierung Erfolgreich")
-                if(json.value === "500") alert("Fehlgeschlagen")
+                if(json.value === 200) alert("Regestrierung Erfolgreich")
+                if(json.value === 500) alert("Fehlgeschlagen")
                 break;
             case "show":
                 alert(json.value)
