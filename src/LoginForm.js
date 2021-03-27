@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 
-export default function LoginForm(props) {
+export default function LoginForm() {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -8,7 +8,7 @@ export default function LoginForm(props) {
 
     let login = () => {
 
-        fetch("http://localhost:8081/login", {
+        fetch(process.env.REACT_APP_AUTH_LINK, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -22,12 +22,12 @@ export default function LoginForm(props) {
             }
 
             response.json().then(e => {
-                if (e.userid === undefined) {
+                if (e.hash === undefined) {
                     setError(true)
                     return
                 }
-                localStorage.setItem("userid", e.userid)
-                props.logInState(true)
+                localStorage.setItem("hash", e.hash)
+                window.location.reload()
 
             })
         }).catch(e => {
