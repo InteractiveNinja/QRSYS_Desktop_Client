@@ -34,11 +34,24 @@ class MainMenu extends React.Component {
   render() {
     
     return (
+      <>
       <div>
           <h1>Device Register</h1>
         <input onChange={e => this.setState({"hostname":e.target.value})} placeholder="Hostname" />
         <button onClick={this.connectWS}>Register</button>
+
       </div>
+
+<div>
+  <button onClick={() =>{
+    alert("Ausgeloggt")
+    localStorage.clear()
+    window.location.reload()
+
+  }}>Logout</button>
+</div>
+
+</>
     );
   }
 }
