@@ -1,52 +1,15 @@
-import React from "react";
+import {React,useState} from 'react'
+import LoginForm from './LoginForm'
+import MainMenu from './MainMenu'
 
-class App extends React.Component {
-  state = {
-    userid: "",
-    hostname: ""
-  };
+export default function App() {
 
-  setUserID = event => {
-    this.setState({ userid: event.target.value });
-  };
-  setHostName = event => {
-    this.setState({ hostname: event.target.value });
-  };
+  const [LoggedIn, setLoggedIn] = useState(false)
 
-  connectWS = () => {
-    let con = new WebSocket("ws://localhost:8080")
-    con.onopen = () =>{
-        con.send(JSON.stringify({type:"register",value:this.state.userid,hostname:this.state.hostname}))
-    }
-    con.onmessage = (msg) =>{
-        let json = JSON.parse(msg.data)
-        console.log(json)
-        switch (json.type) {
-            case "callback":
-                if(json.value === 200) alert("Regestrierung Erfolgreich")
-                if(json.value === 500) alert("Fehlgeschlagen")
-                break;
-            case "show":
-                alert(json.value)
-                break;
-            default:
-                alert("idk irgendwas bekommen")
-                break;
-        }
-       
-    }
-  };
-
-  render() {
-    return (
-      <div>
-          <h1>Device Register</h1>
-        <input onChange={this.setUserID} placeholder="User ID" />
-        <input onChange={this.setHostName} placeholder="Hostname" />
-        <button onClick={this.connectWS}>Register</button>
-      </div>
-    );
-  }
+  return (
+    <div>
+      {(!localStorage.getItem("userid")) ? (!LoggedIn)? <LoginForm logInState={setLoggedIn}></LoginForm> : <MainMenu></MainMenu> : <MainMenu></MainMenu>}
+      
+    </div>
+  )
 }
-
-export default App;
