@@ -1,6 +1,6 @@
 import {React} from 'react'
-import LoginForm from './LoginForm'
-import MainMenu from './MainMenu'
+import LoginForm from './components/LoginForm'
+import MainMenu from './components/MainMenu'
 
 export default function App() {
 

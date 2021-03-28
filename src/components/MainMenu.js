@@ -4,18 +4,26 @@ class MainMenu extends React.Component {
 
 
 
-  state = {
-    hostname: "",
-  }
+  
 
-  userid = ""
+  
 
   constructor() {
     super()
-    this.getUserID()
+    this.checkHashAndGetUserID()
+
+    
+
+    this.state = {
+      hostname: "",
+      userid: ""
+    }
   }
 
-  getUserID = () => {
+  /**
+   * Prüft ob der Hash Valide ist und versucht mit diesem dier UserID zu erhalten
+   */
+  checkHashAndGetUserID = () => {
     fetch(process.env.REACT_APP_AUTH_LINK, {
       method: "POST",
       headers: {
@@ -23,7 +31,7 @@ class MainMenu extends React.Component {
       },
       body: JSON.stringify({ hash: localStorage.getItem("hash") })
     }).then(e => e.json().then(e => {
-      this.userid = e.userid
+      this.setState({userid: e.userid})
     })).catch(() =>{
       alert("Wir konnten dich nicht einloggen")
       localStorage.clear()
@@ -33,10 +41,13 @@ class MainMenu extends React.Component {
   }
 
 
+  /**
+   * Baut eine Verbindung mit dem Web Socket auf
+   */
   connectWS = () => {
     let con = new WebSocket(process.env.REACT_APP_SOCKET_LINK)
     con.onopen = () => {
-      con.send(JSON.stringify({ type: "register", value: this.userid, hostname: this.state.hostname }))
+      con.send(JSON.stringify({ type: "register", value: this.state.userid, hostname: this.state.hostname }))
     }
     con.onmessage = (msg) => {
       let json = JSON.parse(msg.data)
@@ -63,7 +74,7 @@ class MainMenu extends React.Component {
       <>
         <div>
           <h1>Device Register</h1>
-          <input onChange={e => this.setState({ "hostname": e.target.value })} placeholder="Hostname" />
+          <input onChange={e => this.setState({ hostname: e.target.value })} placeholder="Hostname" />
           <button onClick={this.connectWS}>Register</button>
 
         </div>

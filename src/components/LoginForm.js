@@ -6,6 +6,10 @@ export default function LoginForm() {
     const [password, setPassword] = useState("")
     const [error, setError] = useState(false)
 
+
+    /**
+     * Verbindet mit den Auth Server und prüft die Login Daten, setzt einen Hash in den Localstorage wenn die Daten korrekt sind
+     */
     let login = () => {
 
         fetch(process.env.REACT_APP_AUTH_LINK, {
