@@ -1,18 +1,17 @@
 import React from "react";
-
 class MainMenu extends React.Component {
 
 
 
-  
 
-  
+
+
 
   constructor() {
     super()
     this.checkHashAndGetUserID()
 
-    
+
 
     this.state = {
       hostname: "",
@@ -31,8 +30,8 @@ class MainMenu extends React.Component {
       },
       body: JSON.stringify({ hash: localStorage.getItem("hash") })
     }).then(e => e.json().then(e => {
-      this.setState({userid: e.userid})
-    })).catch(() =>{
+      this.setState({ userid: e.userid })
+    })).catch(() => {
       alert("Wir konnten dich nicht einloggen")
       localStorage.clear()
       window.location.reload()
@@ -71,24 +70,18 @@ class MainMenu extends React.Component {
   render() {
 
     return (
-      <>
-        <div>
-          <h1>Device Register</h1>
-          <input onChange={e => this.setState({ hostname: e.target.value })} placeholder="Hostname" />
-          <button onClick={this.connectWS}>Register</button>
+      <div>
+        <h1>Device Register</h1>
+        <input onChange={e => this.setState({ hostname: e.target.value })} placeholder="Hostname" />
+        <button onClick={this.connectWS}>Register</button>
+        <button onClick={() => {
+          alert("Ausgeloggt")
+          localStorage.clear()
+          window.location.reload()
 
-        </div>
+        }}>Logout</button>
+      </div>
 
-        <div>
-          <button onClick={() => {
-            alert("Ausgeloggt")
-            localStorage.clear()
-            window.location.reload()
-
-          }}>Logout</button>
-        </div>
-
-      </>
     );
   }
 }

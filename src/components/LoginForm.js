@@ -1,5 +1,4 @@
 import { React, useState } from 'react'
-
 export default function LoginForm() {
 
     const [username, setUsername] = useState("")
@@ -41,7 +40,7 @@ export default function LoginForm() {
     }
     return (
         <div>
-            {(error) ? <h1>Es ist ein Fehler aufgetreten!</h1> : ""}
+            {(error) ? <p className="error">Es ist ein Fehler aufgetreten!</p> : ""}
             <h1>Einloggen</h1>
             <input placeholder="Benutzername" onChange={e => setUsername(e.target.value)}></input> <br></br>
             <input placeholder="Password" onChange={e => setPassword(e.target.value)} type="password"></input><br></br>
